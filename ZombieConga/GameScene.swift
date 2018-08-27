@@ -15,6 +15,22 @@ class GameScene: SKScene {
     var velocity:CGPoint = CGPoint.zero
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
+    let playableRect: CGRect
+    
+    override init(size: CGSize) {
+        let maxAspectRatio:CGFloat = 16.9 / 9.0
+        let playableHeight = size.width / maxAspectRatio
+        let playableMargin = (size.height - playableHeight) / 2.0
+        playableRect = CGRect(x: 0, y: playableMargin,
+                              width: size.width,
+                              height: playableHeight)
+        
+        super.init(size: size)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init coder has not been implemented")
+    }
     
     override func didMove(to view: SKView) {
         
@@ -29,6 +45,7 @@ class GameScene: SKScene {
         zombie.position = CGPoint(x: 400, y: 400)
         addChild(zombie)
         
+        //  debugDrawPlayableArea()
     }
     
     func move(sprite: SKSpriteNode, velocity: CGPoint) {
@@ -54,6 +71,33 @@ class GameScene: SKScene {
     func sceneTouched(touchLocation: CGPoint) {
         
         moveZombieToward(location: touchLocation)
+        
+    }
+    
+    func boundsCheckZombie() {
+        
+        let bottomLeft = CGPoint(x: 0, y: playableRect.minY)
+        let topRight = CGPoint(x: size.width, y: playableRect.maxY)
+        
+        if zombie.position.x <= bottomLeft.x {
+            zombie.position.x = bottomLeft.x
+            velocity.x = -velocity.x
+        }
+        
+        if zombie.position.x >= topRight.x {
+            zombie.position.x = topRight.x
+            velocity.x = -velocity.x
+        }
+        
+        if zombie.position.y <= bottomLeft.y {
+            zombie.position.y = bottomLeft.y
+            velocity.y = -velocity.y
+        }
+        
+        if zombie.position.y >= topRight.y {
+            zombie.position.y = topRight.y
+            velocity.y = -velocity.y
+        }
         
     }
     
@@ -89,6 +133,18 @@ class GameScene: SKScene {
         lastUpdateTime = currentTime
         
         move(sprite: zombie, velocity: velocity)
+      //  print("zombie position: ( \(zombie.position.x), \(zombie.position.y) )")
+      //  print("size position: ( \(size.height), \(size.width) )")
+        boundsCheckZombie()
+    }
+    
+    func debugDrawPlayableArea() {
+        
+        let shape = SKShapeNode(rect: playableRect)
+        shape.strokeColor = SKColor.red
+        shape.lineWidth = 4.0
+        addChild(shape)
+        
     }
     
 }
