@@ -16,6 +16,8 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     let playableRect: CGRect
+    var lastTouchLocation: CGPoint = CGPoint.zero
+    let zombieRotateRadiansPerSec: CGFloat = 4.0 * π
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16.9 / 9.0
@@ -50,8 +52,23 @@ class GameScene: SKScene {
     
     func move(sprite: SKSpriteNode, velocity: CGPoint) {
         
-        let amountToMove = CGPoint(x: velocity.x * CGFloat(dt), y:velocity.y * CGFloat(dt))
-        sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
+        //long form
+        //let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
+        //                           y: velocity.y * CGFloat(dt))
+        
+        //sprite.position = CGPoint(x: sprite.position.x + amountToMove.x,
+        //                          y: sprite.position.y + amountToMove.y)
+        
+        //refactored using overloaded operators
+        let amountToMove = velocity * CGFloat(dt)
+        
+        sprite.position += amountToMove
+        
+    }
+    
+    func rotate(sprite: SKSpriteNode, direction: CGPoint) {
+        
+        sprite.zRotation = atan2(direction.y, direction.x)
         
     }
     
@@ -70,6 +87,7 @@ class GameScene: SKScene {
     
     func sceneTouched(touchLocation: CGPoint) {
         
+        lastTouchLocation = touchLocation
         moveZombieToward(location: touchLocation)
         
     }
@@ -132,9 +150,21 @@ class GameScene: SKScene {
         }
         lastUpdateTime = currentTime
         
-        move(sprite: zombie, velocity: velocity)
-      //  print("zombie position: ( \(zombie.position.x), \(zombie.position.y) )")
-      //  print("size position: ( \(size.height), \(size.width) )")
+        if (abs(lastTouchLocation.length() - zombie.position.length()) <= CGFloat(Double(zombieMovePointsPerSec) * dt)) {
+            
+            zombie.position = lastTouchLocation
+            velocity = CGPoint.zero
+            
+        } else {
+            move(sprite: zombie, velocity: velocity)
+            
+          //  print("zombie position: ( \(zombie.position.x), \(zombie.position.y) )")
+          //  print("size position: ( \(size.height), \(size.width) )")
+            
+            rotate(sprite: zombie, direction: velocity)
+            
+        }
+        
         boundsCheckZombie()
     }
     
