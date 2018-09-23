@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA1E57D0215810810012ABDB /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1E57CF215810810012ABDB /* GameOverScene.swift */; };
+		BA1E57D2215823280012ABDB /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1E57D1215823280012ABDB /* MainMenuScene.swift */; };
 		BA494B712128A43100214837 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA494B702128A43100214837 /* AppDelegate.swift */; };
 		BA494B772128A43100214837 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA494B762128A43100214837 /* GameScene.swift */; };
 		BA494B792128A43100214837 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA494B782128A43100214837 /* GameViewController.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BA1E57CF215810810012ABDB /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		BA1E57D1215823280012ABDB /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		BA494B6D2128A43100214837 /* ZombieConga.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZombieConga.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA494B702128A43100214837 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BA494B762128A43100214837 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 			children = (
 				BA494B702128A43100214837 /* AppDelegate.swift */,
 				BA494B762128A43100214837 /* GameScene.swift */,
+				BA1E57D1215823280012ABDB /* MainMenuScene.swift */,
+				BA1E57CF215810810012ABDB /* GameOverScene.swift */,
 				BA494B782128A43100214837 /* GameViewController.swift */,
 				BA494B7A2128A43100214837 /* Main.storyboard */,
 				BA494B7D2128A43300214837 /* Assets.xcassets */,
@@ -169,6 +175,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA1E57D2215823280012ABDB /* MainMenuScene.swift in Sources */,
+				BA1E57D0215810810012ABDB /* GameOverScene.swift in Sources */,
 				BA494B772128A43100214837 /* GameScene.swift in Sources */,
 				BA494B792128A43100214837 /* GameViewController.swift in Sources */,
 				BA494B712128A43100214837 /* AppDelegate.swift in Sources */,

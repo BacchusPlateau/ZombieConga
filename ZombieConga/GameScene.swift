@@ -13,7 +13,8 @@ class GameScene: SKScene {
     var zombie = SKSpriteNode()
     var zombieMovePointsPerSec:CGFloat = 480.0
     var catMovePointsPerSec:CGFloat = 480.0
-    
+    var lives = 5
+    var gameOver = false
     var velocity:CGPoint = CGPoint.zero
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
@@ -105,6 +106,7 @@ class GameScene: SKScene {
         
         zombie = SKSpriteNode(imageNamed: "zombie1")
         zombie.position = CGPoint(x: 400, y: 400)
+        zombie.zPosition = 100
         addChild(zombie)
         //zombie.run(SKAction.repeatForever(zombieAnimation))
         //startZombieAnimation()
@@ -122,6 +124,8 @@ class GameScene: SKScene {
                 self?.spawnCat()
                 },
                 SKAction.wait(forDuration: 1.0)])))
+        
+        playBackgroundMusic(filename: "backgroundMusic.mp3")
         
     }
     
@@ -148,7 +152,33 @@ class GameScene: SKScene {
         fatalError("init coder has not been implemented")
     }
     
-    
+    func loseCats() {
+        
+        var loseCount = 0
+        
+        enumerateChildNodes(withName: "train") { node, stop in
+            var randomSpot = node.position
+            randomSpot.x += CGFloat.random(min: -100, max: 100)
+            randomSpot.y += CGFloat.random(min: -100, max: 100)
+            
+            node.name = ""
+            node.run(
+                SKAction.sequence([
+                    SKAction.group([
+                        SKAction.rotate(byAngle: π*4, duration: 1.0),
+                        SKAction.move(to: randomSpot, duration: 1.0),
+                        SKAction.scale(to: 0, duration: 1.0)
+                        ]),
+                    SKAction.removeFromParent()
+                ]))
+            
+            loseCount += 1
+            print("Lost a cat! \(loseCount)")
+            if (loseCount >= 2) {
+                stop[0] = true
+            }
+        }
+    }
     
     func move(sprite: SKSpriteNode, velocity: CGPoint) {
         
@@ -164,6 +194,37 @@ class GameScene: SKScene {
         
         sprite.position += amountToMove
         
+    }
+    
+    func moveTrain() {
+        
+        var targetPosition = zombie.position
+        var trainCount = 0
+        
+        enumerateChildNodes(withName: "train") { node, stop in
+            trainCount += 1
+            if !node.hasActions() {
+                let actionDuration = 0.3
+                let offset = targetPosition - node.position
+                let direction = offset.normalized()
+                let amountToMovePerSec = direction * self.catMovePointsPerSec
+                let amountToMove = amountToMovePerSec * CGFloat(actionDuration)
+                let moveAction = SKAction.moveBy(x: amountToMove.x, y: amountToMove.y, duration: actionDuration)
+                node.run(moveAction)
+            }
+            targetPosition = node.position
+        }
+            
+        if (trainCount >= 15 && !gameOver) {
+            gameOver = true
+            print("Winning!")
+            
+            backgroundMusicPlayer.stop()
+            let gameOverScene = GameOverScene(size: size, won: true)
+            gameOverScene.scaleMode = scaleMode
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            view?.presentScene(gameOverScene, transition: reveal)
+        }
     }
     
     func moveZombieToward(location: CGPoint) {
@@ -258,7 +319,7 @@ class GameScene: SKScene {
         
         //let repeatAction = SKAction.repeatForever(sequence)
         
-        let actionMove = SKAction.moveTo(x: -enemy.size.width / 2, duration: 2.0)
+        let actionMove = SKAction.moveTo(x: -enemy.size.width / 2, duration: 4.0)
         let actionRemove = SKAction.removeFromParent()
         
         enemy.run(SKAction.sequence([actionMove, actionRemove]))
@@ -325,6 +386,18 @@ class GameScene: SKScene {
         }
         
         boundsCheckZombie()
+        moveTrain()
+        
+        if (lives <= 0 && !gameOver) {
+            gameOver = true
+            print("Losing sucks!")
+            
+            backgroundMusicPlayer.stop()
+            let gameOverScene = GameOverScene(size: size, won: false)
+            gameOverScene.scaleMode = scaleMode
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            view?.presentScene(gameOverScene, transition: reveal)
+        }
         
     }
     
@@ -364,6 +437,9 @@ class GameScene: SKScene {
         
         zombie.run(SKAction.sequence([blinkAction, setHidden]))
         run(enemyCollisionSound)
+        
+        loseCats()
+        lives -= 1
         
     }
     
