@@ -21,6 +21,7 @@
 		BA55A827214DB5D900793B75 /* hitCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA55A822214DB5D900793B75 /* hitCat.wav */; };
 		BA55A828214DB5D900793B75 /* hitCatLady.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA55A823214DB5D900793B75 /* hitCatLady.wav */; };
 		BA55A829214DB5D900793B75 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BA55A824214DB5D900793B75 /* backgroundMusic.mp3 */; };
+		BA7DF57F215AE69100966D95 /* GLIMSTIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = BA7DF57E215AE69100966D95 /* GLIMSTIC.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		BA55A822214DB5D900793B75 /* hitCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCat.wav; sourceTree = "<group>"; };
 		BA55A823214DB5D900793B75 /* hitCatLady.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCatLady.wav; sourceTree = "<group>"; };
 		BA55A824214DB5D900793B75 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
+		BA7DF57E215AE69100966D95 /* GLIMSTIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GLIMSTIC.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				BA55A81F214DB5D900793B75 /* Sounds */,
 				BA494B7F2128A43300214837 /* LaunchScreen.storyboard */,
 				BA494B822128A43300214837 /* Info.plist */,
+				BA7DF57E215AE69100966D95 /* GLIMSTIC.TTF */,
 				BA494B88213A02A900214837 /* MyUtils.swift */,
 			);
 			path = ZombieConga;
@@ -158,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA7DF57F215AE69100966D95 /* GLIMSTIC.TTF in Resources */,
 				BA55A826214DB5D900793B75 /* lose.wav in Resources */,
 				BA494B7C2128A43100214837 /* Main.storyboard in Resources */,
 				BA55A829214DB5D900793B75 /* backgroundMusic.mp3 in Resources */,

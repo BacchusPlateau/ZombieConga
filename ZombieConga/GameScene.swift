@@ -27,6 +27,8 @@ class GameScene: SKScene {
     var isZombieInvincible:Bool = false
     let cameraNode = SKCameraNode()
     let cameraMovePointsPerSec: CGFloat = 200.0
+    let livesLabel = SKLabelNode(fontNamed: "Glimstick")
+    let catsLabel = SKLabelNode(fontNamed: "Glimstick")
     
     var cameraRect : CGRect {
         let x = cameraNode.position.x - size.width / 2 + (size.width - playableRect.width) / 2
@@ -34,6 +36,7 @@ class GameScene: SKScene {
         
         return CGRect(x: x, y: y, width: playableRect.width, height: playableRect.height)
     }
+    
     
     func backgroundNode() -> SKSpriteNode {
         
@@ -167,6 +170,28 @@ class GameScene: SKScene {
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
         
+        livesLabel.text = "Lives: X"
+        livesLabel.fontColor = SKColor.black
+        livesLabel.fontSize = 100
+        livesLabel.zPosition = 150
+        livesLabel.horizontalAlignmentMode = .left
+        livesLabel.verticalAlignmentMode = .bottom
+        livesLabel.position = CGPoint(
+            x: -playableRect.size.width / 2 + CGFloat(20),
+            y: -playableRect.size.height / 2 + CGFloat(20))
+        cameraNode.addChild(livesLabel)
+        
+        catsLabel.text = "Cats: X"
+        catsLabel.fontColor = SKColor.black
+        catsLabel.fontSize = 100
+        catsLabel.zPosition = 150
+        catsLabel.horizontalAlignmentMode = .right
+        catsLabel.verticalAlignmentMode = .bottom
+        catsLabel.position = CGPoint(
+            x: playableRect.size.width / 2 - CGFloat(20),
+            y: -playableRect.size.height / 2 + CGFloat(20))
+        cameraNode.addChild(catsLabel)
+        
     }
     
     override init(size: CGSize) {
@@ -273,6 +298,8 @@ class GameScene: SKScene {
             }
             targetPosition = node.position
         }
+        
+        catsLabel.text = "Cats: \(trainCount)"
             
         if (trainCount >= 15 && !gameOver) {
             gameOver = true
@@ -428,27 +455,16 @@ class GameScene: SKScene {
         } else {
             dt = 0
         }
+
         lastUpdateTime = currentTime
-        
-    //    if (abs(lastTouchLocation.length() - zombie.position.length()) <= CGFloat(Double(zombieMovePointsPerSec) * dt)) {
-            
-    //        zombie.position = lastTouchLocation
-    //        velocity = CGPoint.zero
-    //        stopZombieAnimation()
-            
-     //   } else {
-            move(sprite: zombie, velocity: velocity)
-            
-          //  print("zombie position: ( \(zombie.position.x), \(zombie.position.y) )")
-          //  print("size position: ( \(size.height), \(size.width) )")
-            
-            rotate(sprite: zombie, direction: velocity, rotateRadiansPerSec: zombieRotateRadiansPerSec)
-            
-   //     }
-        
+        move(sprite: zombie, velocity: velocity)
+        rotate(sprite: zombie, direction: velocity, rotateRadiansPerSec: zombieRotateRadiansPerSec)
+
         boundsCheckZombie()
         moveTrain()
         moveCamera()
+        
+        livesLabel.text = "Lives: \(lives)"
         
         if (lives <= 0 && !gameOver) {
             gameOver = true
@@ -461,7 +477,6 @@ class GameScene: SKScene {
             view?.presentScene(gameOverScene, transition: reveal)
         }
         
-       // cameraNode.position = zombie.position
     }
     
     func zombieHit(cat: SKSpriteNode) {
